@@ -17,6 +17,9 @@ election_date
 election_year
 ger_df <- read_dta("./data/ger_nat.dta")
 
+save(election_date, election_year, file = "./data/election_dates.RData")
+save.image(./data/all_data.RData)
+
 # corrections of government variables
 ger_df$spd_gov[ger_df$year == 1965] <- 1 
 ger_df$fdp_gov[ger_df$year == 1980] <- 1
@@ -37,7 +40,8 @@ ger_df_long <- melt(ger_df, id.vars = c("year", "turnout", "chancellor", "unemp"
 ger_df_long <- rename(ger_df_long, party = variable)
 
 # gen party id
-ger_df_long$party <- str_extract(ger_df_long$party, "[:alpha:]+")
+ger_df_long$party <- str_replace(ger_df_long$party, "_share", "")
+ger_df_long$party <- str_extract(ger_df_long$party, "[:alpha:]+") #only extract party names
 ger_df_long$party <- str_replace(ger_df_long$party, "cdsu", "cdu")
 ger_df_long <- filter(ger_df_long, party != "npd") # drop npd
 

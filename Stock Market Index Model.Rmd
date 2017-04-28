@@ -33,7 +33,7 @@ CDAX <- read.csv("~/hertie-election-forecasting (Akira)/data/^cdax_d.csv")
 GfK <- read.csv('~/hertie-election-forecasting (Akira)/GfK.csv')
 GFE_Kayser <- read_dta('~/hertie-election-forecasting (Akira)/BundestagForecastReplicationData.dta')
 GFE <- read_dta('~/hertie-election-forecasting (Akira)/data/ger_nat.dta')
-election_dates <- source_data('~/hertie-election-forecasting/data/election_dates.RData') #not working
+election_dates <- load('~/hertie-election-forecasting/data/election_dates.RData') #not working
 GDP <- read.csv('~/hertie-election-forecasting (Akira)/DP_LIVE_26042017111042979.csv')
 GFE$Date <- election_date
 GFE$Date <- ymd(as.character(GFE$Date))
@@ -62,6 +62,8 @@ ccfvalues
 vifvalues <- lm(Close ~ Actual, eco.in)
 summary(vifvalues)
 vif(vifvalues)
+#xts package
+#zoo
 ```
 
 ```{r plot CDAX_GDP, include=TRUE, echo=TRUE}

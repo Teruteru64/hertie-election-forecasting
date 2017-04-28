@@ -1,4 +1,3 @@
-#
 char <- function(x) as.character(x)
 num <- function(x) as.numeric(x)
 
@@ -8,7 +7,8 @@ simpleCap <- function(x) {
         sep="", collapse=" ")
 }
 
-recode_partynames <- function(x, longnames = FALSE) {
+#changing the labels (party names)
+recode_partynames <- function(x, longnames = FALSE) #longnames FALSE = choose a shorter version {
   require(stringr)
   x_recoded <- x %>% str_replace("cdu", "Union") %>%
     str_replace("fdp", "FDP") %>% 
