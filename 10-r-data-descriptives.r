@@ -4,6 +4,7 @@
 ### data preparation and descriptives
 # ************************************************
 
+
 source("packages.r")
 source("functions.r")
 
@@ -25,7 +26,7 @@ ger_df$spd_gov[ger_df$year == 2005] <- 1
 # add vote shares for others
 ger_df$npd_share <- NULL
 ger_df$npd_seats <- NULL
-ger_df <- mutate(ger_df, oth_share = 100 - cdsu_share - spd_share - fdp_share - gru_share - lin_share - afd_share)  # create voteshare for others 
+ger_df <- mutate(ger_df, oth_share = 100 - cdsu_share - spd_share - fdp_share - gru_share - lin_share - afd_share)  
 
 # make df long
 ger_df_long <- select(ger_df, ends_with("_share"), year) %>% 
@@ -39,7 +40,6 @@ ger_df_long <- rename(ger_df_long, party = variable)
 # gen party id
 ger_df_long$party <- str_extract(ger_df_long$party, "[:alpha:]+")
 ger_df_long$party <- str_replace(ger_df_long$party, "cdsu", "cdu")
-ger_df_long <- filter(ger_df_long, party != "npd") # drop npd
 
 # gen election id
 elections_df <- data.frame(year = unique(ger_df_long$year), election = seq_along(unique(ger_df_long$year)))
@@ -103,19 +103,29 @@ save(ger_df_long, file = "./data/ger_model_df.RData")
 
 ### descriptives --------------------------------------------
 
-# generatee summary table
+# generate summary table
 ger_df_sub <- select(ger_df_long, voteshare, voteshare_l1, chancellor_party, polls_200_230)
-summary(ger_df_long)
-stargazer(ger_df_sub, title = "Summary statistics", type = "latex", out = "figures/sumstats.tex")
+summary(ger_df_sub)
+stargazer(ger_df_sub, title = "Summary statistics", type = "latex", out = "figures/sumstats.latex")
+
+# stargazer cheatsheet
+browseURL("http://jakeruss.com/cheatsheets/stargazer.html")
+
+# generate contingency table
+table(ger_df_long$party)
+table(ger_df_long$gov, ger_df_long$party)
+tab <- table(ger_df_long$gov, ger_df_long$party)
+rownames(tab) <- c("Not in government", "In government")
+colnames(tab) <- recode_partynames(colnames(tab))
+tab <- tab[,c(2, 7, 3, 4, 5, 1, 6)]
+
+xtab <- xtable(tab, align = c("l", "r","r","r", "r", "r", "r", "r"), digits = 0, caption = "Government status, by party")
+print(xtab, booktabs = TRUE, size = "small", caption.placement = "top", table.placement = "t!",  include.colnames = TRUE, include.rownames = TRUE, floating.environment = "table*", file = paste0("figures/tab-party-gov.tex"))
+
 
 # generate plot of bivariate relationship (makes most sense for continuous variables)
 plot(ger_df_sub)
 plot(ger_df_long$voteshare_l1, ger_df_long$voteshare)
-
-# generate contingency table
-table(ger_df_long$party)
-table(ger_df_long$party, ger_df_long$gov)
-
 
 # make it nicer 
 pdf(file="figures/pred_past_voteshare.pdf", height=7, width=7, family="URWTimes")
