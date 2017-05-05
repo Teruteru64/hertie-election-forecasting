@@ -22,15 +22,16 @@ model_out <- lm(swing ~ chancellor_party + voteshare_l1 + polls_200_230, data = 
 model_out <- lm(voteshare ~ chancellor_party + voteshare_l1 + polls_200_230, data = ger_df_long)
 summary(model_out)
 
-# evaluate fit
+# evaluate fit <-- IMPORTANT!
 model_out_fit <- augment(model_out)
 model_out_fit$party <- ger_df_long$party[as.numeric(model_out_fit$.rownames)]
 model_out_fit$year <- ger_df_long$year[as.numeric(model_out_fit$.rownames)]
-mean(abs(model_out_fit$.resid))
+mean(abs(model_out_fit$.resid))# MAE
+sqrt(mean((model_out_fit$.resid^2))) # RMSE
 group_by(model_out_fit, party) %>% summarize(mae = mean(abs(.resid)))
 
-plot(model_out_fit$.fitted, model_out_fit$voteshare, cex = .5, pch = 20)
-text(model_out_fit$.fitted, model_out_fit$voteshare, paste0(model_out_fit$party, str_sub(as.character(model_out_fit$year), -2, -1)), pos = 3, offset = .15, cex = .6)
+plot(model_out_fit$.fitted, model_out_fit$swing, cex = .5, pch = 20)
+text(model_out_fit$.fitted, model_out_fit$swing, paste0(model_out_fit$party, str_sub(as.character(model_out_fit$year), -2, -1)), pos = 3, offset = .15, cex = .6)
 grid()
 abline(0, 1)
 
@@ -39,10 +40,12 @@ abline(0, 1)
 
 ### run multiple models -----------------
 
+#define set of independent variables and dependent variable
 d <- select(ger_df_long, voteshare, voteshare_l1, voteshare_l1_3, polls_200_230, chancellor_party, major, gov, parl) 
 dep_var <- 'voteshare'
 indep_vars <- setdiff(names(d), dep_var)
 
+#run all possible models
 lms <- Reduce(append, lapply(seq_along(indep_vars),
              function(num_vars) {
                Reduce(append, apply(combn(length(indep_vars), num_vars), 2, function(vars) {
@@ -51,8 +54,10 @@ lms <- Reduce(append, lapply(seq_along(indep_vars),
                }))
               }
 ))
+lms[[1]] %>% summary
 length(lms)
 
+#get overview of model performance
 sum_tab <- data.frame(model_name = names(lms), 
                       num_vars = sapply(lms, function(x) { x %>% .$coefficients %>% length}) - 1,
                       #df = sapply(lms, function(x) { summary(x) %>% .$df[2,]}),
@@ -60,7 +65,9 @@ sum_tab <- data.frame(model_name = names(lms),
                       adj_r_squared = sapply(lms, function(x) { summary(x) %>% .$adj.r.squared})
 )
 sum_tab$ratio <- sum_tab$r_squared / sum_tab$num_vars
+View(sum_tab)
 
+#create multiple predictions for 2017
 i = 2017
 lms_best <- lms[sum_tab$r_squared > .35]
 lms_best_predictions <- sapply(lms_best, predict.lm, newdata = filter(ger_df_long, year == i)) %>% t() %>% as.data.frame() 
@@ -68,6 +75,7 @@ lms_best_predictions <- apply(lms_best_predictions, 1, add, filter(ger_df_long, 
 names(lms_best_predictions) <- filter(ger_df_long, year == i)$party
 summary(lms_best_predictions)
 lms_best_predictions$vote_sums <- rowSums(lms_best_predictions)
+View(lms_best_predictions)
 
 
 swing~ltw_swing_mean_200_full+major+voteshare_l1Xelection+polls_200_230yXelection
