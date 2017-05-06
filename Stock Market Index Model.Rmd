@@ -28,13 +28,14 @@ install.packages("repmis")
 library(repmis)
 install.packages("VIF", repos = "https://cran.rstudio.com/")
 library(VIF)
+library(data.table)
 DAX <- fread('https://chart.finance.yahoo.com/table.csv?s=%5EGDAXI&a=10&b=26&c=1990&d=3&e=27&f=2017&g=d&ignore=.csv')
-CDAX <- read.csv("~/hertie-election-forecasting (Akira)/data/^cdax_d.csv")
-CDAX$Date <- ymd(as.character(CDAX$Date))
+CDAX <- read.csv("~/hertie-election-forecasting (Akira)/^CDAXX.csv")
+StockHist <- read.csv("~/hertie-election-forecasting (Akira)/Tab__01_Aktienindex__Dividendenrendite__Performance-Index__Index_der_Lebenshaltungskosten__Realer_Pe.csv")
 GfK <- read.csv('~/hertie-election-forecasting (Akira)/GfK.csv')
 GFE_Kayser <- read_dta('~/hertie-election-forecasting (Akira)/BundestagForecastReplicationData.dta')
 GFE <- read_dta('~/hertie-election-forecasting (Akira)/data/ger_nat.dta')
-election_dates <- load('~/hertie-election-forecasting/data/election_dates.RData') #not working
+election_dates <- load('~/hertie-election-forecasting/data/election_dates.RData')
 GDP <- read.csv('~/hertie-election-forecasting (Akira)/CLVMNACSCAB1GQDE.csv')
 GDP$Date <- ymd(as.character(GDP$DATE))
 GFE$Date <- election_date
@@ -42,7 +43,7 @@ GFE$Date <- ymd(as.character(GFE$Date))
 GFE_Kayser$Date <- as.Date(GFE_Kayser$date, "%d.%m.%Y")
 eco.in <- merge(CDAX, GfK, by = "Date")
 stock_GDP <- merge(CDAX, GDP, by = "Date")
-?cbind
+stock_GDP$stock_gr <- as.data.table(stock_GDP)[, lapply(.SD, function(x)x/shift(x) - 1), .SDcols = 4]
 DAX_GfK <- merge(CDAX, GfK, by = "Date")
 GFE.con <- merge(CDAX, GFE_Kayser, by = "Date")
 
@@ -77,12 +78,14 @@ with(stock_GDP, plot(as.Date(Date), stock_gr, type="l", col="red3",
 xlab="Year", ylab= "CDAX quarterly growth (%)"),
 ylim=c(0,1200))
 par(new = T)
-with(stock_GDP, plot(as.Date(Date), Value, type="l", axes=F, col="blue3", xlab="Year", ylab=NA, cex=1.2))
+with(stock_GDP, plot(as.Date(Date), GDP_growth, type="l", axes=F, col="blue3", xlab="Year", ylab=NA, cex=1.2))
 axis(side = 4)
 mtext(side = 4, line = 3, 'GDP quarterly growth (%)')
 legend("topleft",
 legend=c("DAX quarterly growth (%)", "GDP quarterly growth (%)"),
 lty=1:1, cex=0.50, col=c("red3", "blue3"))
+ccfvalues3 <- ccf(stock_GDP$stock_gr, stock_GDP$GDP_growth, na.action = na.pass)
+ccfvalues3
 ```
 
 ```{r plot DAX & GfK, include=TRUE, echo=TRUE}
