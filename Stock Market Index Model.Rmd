@@ -26,8 +26,6 @@ require(haven)
 library(lubridate)
 install.packages("repmis")
 library(repmis)
-install.packages("VIF", repos = "https://cran.rstudio.com/")
-library(VIF)
 library(data.table)
 DAX <- fread('https://chart.finance.yahoo.com/table.csv?s=%5EGDAXI&a=10&b=26&c=1990&d=3&e=27&f=2017&g=d&ignore=.csv')
 CDAX <- read.csv("~/hertie-election-forecasting (Akira)/^CDAXX.csv")
@@ -41,31 +39,30 @@ GDP$Date <- ymd(as.character(GDP$DATE))
 GFE$Date <- election_date
 GFE$Date <- ymd(as.character(GFE$Date))
 GFE_Kayser$Date <- as.Date(GFE_Kayser$date, "%d.%m.%Y")
-eco.in <- merge(CDAX, GfK, by = "Date")
-stock_GDP <- merge(CDAX, GDP, by = "Date")
+DAX_GfK <- merge(DAX, GfK, by = "Date")
+stock_GDP <- merge(CDAX, GDP, by = "Date", all.x = TRUE)
 stock_GDP$stock_gr <- as.data.table(stock_GDP)[, lapply(.SD, function(x)x/shift(x) - 1), .SDcols = 4]
-DAX_GfK <- merge(CDAX, GfK, by = "Date")
 GFE.con <- merge(CDAX, GFE_Kayser, by = "Date")
 
 ```
 
 ```{r plot CDAX_GfK, include=TRUE, echo=TRUE}
 par(mar = c(5,5,2,5))
-with(eco.in, plot(as.Date(Date), Close, type="l", col="red3",
-xlab="Year", ylab=expression(CDAX)),
+with(DAX_GfK, plot(as.Date(Date), Close, type="l", col="red3",
+xlab="Year", ylab=expression(DAX)),
 ylim=c(0,1200))
 par(new = T)
-with(eco.in, plot(as.Date(Date), Actual, type="l", axes=F, col="blue3", xlab="Year", ylab=NA, cex=1.2))
+with(DAX_GfK , plot(as.Date(Date), Actual, type="l", axes=F, col="blue3", xlab="Year", ylab=NA, cex=1.2))
 axis(side = 4)
 mtext(side = 4, line = 3, 'GfK Consumer Confidence')
 legend("topleft",
 legend=c(expression(CDAX), "GfK Consumer Confidence"),
 lty=1:1, cex=0.75, col=c("red3", "blue3"))
-ccfvalues <- ccf(eco.in$Close, eco.in$Actual)
+ccfvalues <- ccf(DAX_GfK$Close, DAX_GfK$Actual)
 ccfvalues
-vifvalues <- lm(Close ~ Actual, eco.in)
-summary(vifvalues)
-vif(vifvalues)
+perception <- lm(Actual ~ Close, DAX_GfK)
+summary(perception)
+
 #xts package
 #zoo
 ```
