@@ -27,8 +27,14 @@ library(lubridate)
 install.packages("repmis")
 library(repmis)
 library(data.table)
+library(magrittr)
 DAX <- fread('https://chart.finance.yahoo.com/table.csv?s=%5EGDAXI&a=10&b=26&c=1990&d=3&e=27&f=2017&g=d&ignore=.csv')
 CDAX <- read.csv("~/hertie-election-forecasting (Akira)/^CDAXX.csv")
+CDAX$Date <- ymd(as.character(CDAX$Date))
+CDAX$X3M_before <- ymd(as.character(CDAX$X3M_before))
+CDAX$X6M_before <- ymd(as.character(CDAX$X6M_before))
+CDAX$X9M_before <- ymd(as.character(CDAX$X9M_before))
+CDAX$X12_before <- ymd(as.character(CDAX$X12_before))
 StockHist <- read.csv("~/hertie-election-forecasting (Akira)/Tab__01_Aktienindex__Dividendenrendite__Performance-Index__Index_der_Lebenshaltungskosten__Realer_Pe.csv")
 GfK <- read.csv('~/hertie-election-forecasting (Akira)/GfK.csv')
 GFE_Kayser <- read_dta('~/hertie-election-forecasting (Akira)/BundestagForecastReplicationData.dta')
@@ -40,8 +46,6 @@ GFE$Date <- election_date
 GFE$Date <- ymd(as.character(GFE$Date))
 GFE_Kayser$Date <- as.Date(GFE_Kayser$date, "%d.%m.%Y")
 DAX_GfK <- merge(DAX, GfK, by = "Date")
-stock_GDP <- merge(CDAX, GDP, by = "Date", all.x = TRUE)
-stock_GDP$stock_gr <- as.data.table(stock_GDP)[, lapply(.SD, function(x)x/shift(x) - 1), .SDcols = 4]
 GFE.con <- merge(CDAX, GFE_Kayser, by = "Date")
 
 ```
@@ -68,14 +72,22 @@ summary(perception)
 ```
 
 ```{r plot CDAX_GDP, include=TRUE, echo=TRUE}
-stock_GDP <- stock_GDP%>%
-      mutate(stock_gr=log(Close/lag(Close,1)))
+install.packages("xts")
+library(xts)
+CDAX2 <- CDAX[endpoints(CDAX$Date, on = "months"), ]
+locs <- tapply(X=CDAX2$Date, FUN=min, INDEX=format(CDAX2$Date, '%Y%m'))
+t(t(locs))
+at = CDAX2$Date %in% locs
+at = at & format(CDAX2$Date, '%m') %in% c('03', '06', '09', '12')
+CDAX3 <- CDAX2[which(at == TRUE),]
+CDAX3 <- subset(CDAX3, Date > as.Date("1991-01-01"))
+CDAX3$stock_gr <- as.numeric(CDAX3$Close)/lag(as.numeric(CDAX3$Close,1)-1)*100
 par(mar = c(5,5,2,5))
-with(stock_GDP, plot(as.Date(Date), stock_gr, type="l", col="red3",
-xlab="Year", ylab= "CDAX quarterly growth (%)"),
+with(CDAX3, plot(as.Date(Date), stock_gr, type="l", col="red3", 
+xlab="Year", ylab= "CDAX quarterly growth (%)"), 
 ylim=c(0,1200))
 par(new = T)
-with(stock_GDP, plot(as.Date(Date), GDP_growth, type="l", axes=F, col="blue3", xlab="Year", ylab=NA, cex=1.2))
+with(GDP, plot(as.Date(Date), GDP_growth, type="l", axes=F, col="blue3", xlab="Year", ylab=NA, cex=1.2))
 axis(side = 4)
 mtext(side = 4, line = 3, 'GDP quarterly growth (%)')
 legend("topleft",
@@ -87,7 +99,7 @@ ccfvalues3
 
 ```{r plot DAX & GfK, include=TRUE, echo=TRUE}
 par(mar = c(5,5,2,5))
-with(DAX_GfK, plot(as.Date(Date), Close, type="l", col="red3",
+with(DAX_GfK, (as.Date(Date), Close, type="l", col="red3",
 xlab="Year", ylab=expression(DAX)),
 ylim=c(0,1200))
 par(new = T)
@@ -106,7 +118,11 @@ ccfvalues2
 ```
 
 ```{r regression, include=TRUE, echo=TRUE}
-m <- lm(vote ~ stockindex + voteshare + partisanship + term)
+m <- lm(outgovshare ~ three_month + prelecshare + pid + logterms, GFE_Kayser)
+m1 <- lm(outgovshare ~ six_month + prelecshare + pid + logterms, GFE_Kayser)
+m2 <- lm(outgovshare ~ nine_month + prelecshare + pid + logterms, GFE_Kayser)
+m3 <- lm(outgovshare ~ twelve_month + prelecshare + pid + logterms, GFE_Kayser)
+summary(m)
 ```
 
 
