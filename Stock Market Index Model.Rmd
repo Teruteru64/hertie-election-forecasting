@@ -123,6 +123,8 @@ m1 <- lm(outgovshare ~ six_month + prelecshare + pid + logterms, GFE_Kayser)
 m2 <- lm(outgovshare ~ nine_month + prelecshare + pid + logterms, GFE_Kayser)
 m3 <- lm(outgovshare ~ twelve_month + prelecshare + pid + logterms, GFE_Kayser)
 summary(m)
+m4 <- lm(outgovshare ~ election_date + prelecshare + pid + logterms, GFE_Kayser)
+summary(m4)
 ```
 
 
