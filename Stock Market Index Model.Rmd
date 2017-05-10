@@ -12,6 +12,39 @@ opts_chunk$set(message = FALSE, error = TRUE, fig.pos = 'H', tidy.opts=list(widt
            cache = TRUE, par = TRUE)
 ```
 
+#Introduction
+##The 2016 US presidential election result was a huge surprise to all people as the outcome was totally different from what the majority of pollsters and media had forecasted. Only very few pundits managed to predict Donald Trump’s victory and those have not proved the prediction on a scientific ground. However, there was one interesting indicator that was free from any intentional bias and that could be used to predict Trump’s win before the election had taken place; stock market index. According to Long (2016), the S&P 500 index performance during the latest three months prior to the election indicated that Trump would likely win against Hilary at the election. The mechanism is as follows. Firstly, the stock index is tracked in the last three before the election month. Then, the ups-and-downs of the market during the period are analyzed. If the index rose from the beginning at the end of the period, the incumbent governing parties are predicted to win the election. If it shows the opposite trend, the incumbent party will lose. The method correctly predicted 19 of the past US presidential 22 elections, which is 86% accuracy (Shell, 2016). This is a surprising outcome for such a simple analysis. The underlying theory is that “if the economy is growing and people think the good times will continue, they are likely to want to stick with the same presidential party. If they are fearful, stocks tend to fall, and voters want new leadership” (Long, 2016). The only times this model failed were when there were strong third partycandidates involved, for example in 1968 and 1980 US presidential elections, and also when a big geopolitical shock happened like 1956 Suez Crisis (Long, 2016).
+##This relation between stock market index and election results poses an interesting question; do people regard elections as the channel to reward or punish the incumbent office, if not merely but largely, based on its economic performance? Stock market index is usually said a leading economic indicator that shows the economic performance of the country before it really impacts people’s living. Generally speaking, it takes from a few months or a year until the impact reaches people in the form of employment, salary change and price change. This time lag gives stock market index a potential to predict election results with an appealing amount of lead. This paper would like to test this theory in German federal election instead of US presidential election in the interest of studying whether the variable can be relevant to the other countries aside the US as well. Ambitiously, this paper also would like to predict whether Angela Merkel can stay in the office after the upcoming election in Germany, which takes place on 24 September 2017. If the model really works in German election, with the simplicity of the model and the relatively long lead, this model could be an attractive alternative to the existing models.
+
+
+#Research design
+##At first, it is important to acknowledge the limitation of this stock market index model. The model is not fit to forecast the shares of votes for each party but more suitable to predict whether the incumbent ruling parties are going to win or lose in the elections. Actually, fundamental models usually function to predict the vote share of the targeted party with several explanatory variables rather than forecasting that of each and every party (Abramowitz, 2004; Dubois and Fauvelle-Aymar, 2004; Jérôme and Jérôme-Speziari, 2004; Lewis-Beck et al., 2004). This will likely suffice to predict the winners in the two major party system like in the US, however, in the multiparty system like Germany, it does not give a defining answer on who would be the winners as the loss of one party cannot be translated into the win of another. Yet the model should be still valuable if it can manage to predict whether the government changes or not correctly as that will narrow down the potential winners as the consequence. Therefore, this paper is dedicated to study how reliable stock market index is as a variable to predict the election result for the incumbent ruling parties in Germany.
+##Also, this paper acknowledges that stock markets are prone to interest the smaller wealthy group of populations, which might bias the model to some extent. There is a general question how much stock markets matter to people’s lives if they are not investing in stocks. Of course, the stock market indices are more of interest to investors and the performances more directly impact those people. However, at the same time it is generally recognized that stock market indices are legit leading economic indicators. Investors trade based on all the available latest information and their decisions impact the listed companies’ financing, which trickles down to workers in the companies. Therefore, stock market indices are not as remote things from ordinary people as it seems in fact. The point this paper finds attractive about using stock market index in the forecasting model is mostly focused on the relatively long lead the data give. Therefore, although there is a concern that stock market indices might assume a certain bias, this paper argues it is not as large as generally considered and the lead it gives makes the model attractive even there is a bias as such. The relation between stock market index and real time economy will be further discussed by using relative data.
+##In addition to the aforementioned limitations, there is another difficulty in this model, associated with the multiparty system in Germany. This aspect has been already touched on when illustrating the US case, but the existence of a strong third party can complicate the result by large. In Germany, CDU/CSU and SPD are two major parties but there are also several other notable parties such as Green and Die Linke. Although a worsening economy might make the incumbent leading party unpopular, depending on how the third party performs in the election would play an imperative role in the final outcome. Should the opposition votes get split between two parties or more, the leading party may still be able to enjoy the majority to stay in the office. This is a big challenge to the captioned model but it is nothing unique. Kayser and Leininger (2016) also faced with the difficulty in their “benchmarking model” and they coped with the issue by rather focusing on the coalition vote share than that of individual party. Fundamentally, the model introduced in this paper takes the similar stance since the coalition government is equal to the incumbent office. Given this point, through concentrating on predicting whether the incumbent leading parties are winning the election or not, this paper expects to achieve as a precise prediction as the case of the US presidential elections.
+##In the following paragraphs, this paper delves into the theoretical construct of this stock market index model. The first argument is a variables selection. This model is a fundamental model hence there are several other models that it can be benchmarked to. This paper looks into those models and select suitable variables in the captioned model. The second point to be discussed is the length of the tracking period of the stock market. The market can fluctuate significantly on a daily basis and it includes so many noises. The key is how long is enough to capture the trend in the market which can be translated into a future economic trend. Also, this should not be too long as it can more likely catch a different cycle and noises.
+##The third part discusses the timing to start tracking the stock market performance. This is relevant to how long the lag is between the stock market index as a leading economic indicator and the coincident economic indicator. This paper would like to answer this by evaluating the time lag between German notable index and GDP growth.
+##Fourthly, it will be argued how much perceptions of people matter. The question is whether perception towards the economy or the real economic situation is a determinant to the election outcomes. This will be tested by firstly checking by comparing the effect of the latest three-month stock index on the election outcome to that of the olders. Should the former indicate a more substantive effect, that should mean perception towards ecomony is more important than the real economic situation since there should be a time lag between the stock market performance and economic performance. Moreover, this paper compares before and after the stock market started to be televised in Germany and see if there is any difference since then.
+##At last, this paper analyzes whether stock market performance matters more to specific parties. CDU has been traditionally a conservative party which takes a favorible position for companies. In contrast, SPD is more inclined to political left and less supportive to market economy. Given the point, it seems that stock market index might have a bias to predict CDU more than SPD as CDU government is more preferable for the business actors. In the US, this does not look like the case, however, this paper would like to explore the potential relation.
+
+#I. Model setting
+##The model illustrated in this paper takes the stock market index as one of the variables in a fundamental regression analysis. Stock market index can replace the economic variables used in the other fundamental models like a “Political Economy model” proposed by Jérôme et al (2013) and the aforementioned benchmarking model. Apart from the economic variables, those models use other explanatory variables such as representing political partisanships and vote intentions. Due to the foundational similarities, those variables used in the benchmarking model seem to provide the most reasonable ground to build the stock market index model. The benchmarking model consists of three other variables apart from the economic one: (1) the vote share of the incumbent parties in the previous election; (2) the proportion of people with certain partisanships: and (3) the number of terms held by the current government (Kayser & Leininger, 2016). The vote share of the incumbent parties in the previous elections is the baseline to start a prediction. It is admitted that the past outcomes have a strong influence over the future events hence including the variable into the model enables the other variables to focus on the changes of vote share rather than the vote share itself (Kayser & Leininger, 2016).
+##As for the second variable, the proportion of people with certain partisanships should be included in the model as the independent variable since the voters sometimes tend to support certain parties based on the strong motives deriving from their political ideology or sentimental attachments to the parties. Empirical studies prove the point and its sound performance as a variable in voting models (Arzheimer, 2012). As is illustrated in the paper of Kayser and Leininger (2016), this paper also uses the average partisan identification for the incumbent leading parties.
+##Regarding the third variable, Norpoth and Gschwend (2013) discussed in their “chancellor model” that the number of terms held by the current government is an important determinant to the election outcome. According to the paper, there is the tendency in German politics that the governing parties lose electorates supports, so called “cost of ruling” (Norpoth & Gschwend, 2013). This effect might affect how the stock market model functions immensely as the model focuses on the outcomes for the incumbent leading parties. If the cost of ruling really prevails, there is a possibility that the governing parties lose the elections regardless of the stock market performance. In taking into account such possibility, this paper will take the variable in the same fashion as in the paper of Kayser and Leininger (2016), the log 10 of the number of terms.
+##This paper will analyze the correlations of those variables to the outcome of the past German federal elections together with the stock market index variable and explore the statistical significance of the new model.
+
+#II. The length of the period of tracking the stock market
+##In the case of the US, a three-month period right before the election gives enough accuracy in the predictions. However, it is unclear why this has to be a three-month period. How the length of the period impacts the overall mechanism of the model is under question. Nevertheless, this paper considers the key point of deciding the tracking period is whether the period is long enough to capture the trend in the economy. At the same time, the period should be as short as possible in order to minimize the noises occurring from tracking a long period. The longer the period becomes, the more likely it captures a different cycle of the economy. In many countries, major economic indicators such as GDP growth and national current account balance are checked on the quarterly basis. This is because three-month period is widely accepted as an enough length to detect the early sign of economical cycle. Furthermore, quarterly data have a special meaning in capital markets. Many corporations publish their financial reports quarterly and stockholders make their decisions based on those publications. Stock markets will fluctuate at this timing and this reflects the overall business sectors’ performance, which has a notable relevance to the country’s economic performance. According to Deutsche Börse (n.d.), the all listed companies are obliged to publish quarterly financial statements or financial reports within two months from the respective reporting periods. This means that all financial information about listed companies becomes available within two months from each quarter. This paper takes the most suitable three-month period to see the economic trend according to those timings.
+
+#III. When to start tracking the stock market index
+##The next issue is to decide from when the index should be tracked. As is mentioned earlier, there is a time lag between the change in the stock market and the effect to the people’s livings. In the aforementioned US case, the stock market started to be tracked from three months. This paper examines the enough time period in the case of Germany by analyzing the time lag between the CDAX, which comprises all German shares traded on the Frankfurt Stock Exchange, and quarterly GDP growth of Germany. CDAX is cacluated into quarterly growth hence it can be comparable to the GDP growth.
+
+#IV. Actual economy vs. perception
+##Another argument is how people’s perceptions matter to the model. Kayser and Leininger (2016) discussed in their paper that voters would rather assess economic performance in the relative term than in the absolute term. For example, even if the economy is in recession, the people would take it positive as long as the economy is performing better than the other neighboring countries according to this logic. In a nutshell, this means people’s perception towards the economy is the one matters, not the economic indicators. Then, it leads to two questions in the context of using stock market index. The first question is what would happen if the stock market index shows a different trend around the time of election from when it was observed. For instance, if the stock market starts to rise just before the election, do voters take it as a positive sign and support the incumbent although it was falling at the time of observation? Or, in the opposite situation, do voters penalize the incumbent although the economy is growing? In order to analyze this effect, this paper will evaluate the influence of the stock market performance from the nearest three-month to the election date by comparing it to the aforementioned period. Should the correlation of the first be more significant than the latter, it should address that perception is more crucial than the actual economy situation.
+##The second question is how much the accessibility of the stock market index matters. Now the stock market index can be easily accessible through various media and channels. Many people have an idea on how it is performing, in particular in the advanced economies like Germany. However, in the past the information must have been more difficult to obtain and only shared among the much less population. If people do not have access to stock market index, then there is no way the ups-and-downs in the market can impact people’s economic perception apart from it really affecting the economy. In Germany, the stock market started to be televised from 1965 and the retail investors have been able to follow exchange trading from their homes ever since (Börse Berlin AG, n.d.). In order to check the influence of accessibility of the information to the people’s perceptions, this paper will attempt in exploring the difference of impact between pre-1965 and post-1965.
+
+#V. Potential of Conservative's advantage
+##Stock market index tends to perform well when the government rolls out business friendly polices. Generally speaking, those are more likely coming from conservative governments than the others. In Germany, CDU/CSU is regarded as a major conservative party whereas SPD is considered as a major liberal party. Based on the difference of the parties' standpoints on economic policy, there is a question that ups and downs of stock market index is not so much relevant to the incumbent government's performance but more to the expectation on the right-winged party winning the election. This paper looks into the possiblity by assessing the effect of the stock marktet index to the election outcome for CDU/CSU. If the hypothesis is true, there must be a significant and substantive correlation between the two.
+
 ```{r setting, include=FALSE, echo=FALSE}
 library(foreign) #read foreign file objects
 install.packages("dplyr", repos = "https://cran.rstudio.com/")
@@ -28,6 +61,7 @@ install.packages("repmis")
 library(repmis)
 library(data.table)
 library(magrittr)
+library(stargazer)
 DAX <- fread('https://chart.finance.yahoo.com/table.csv?s=%5EGDAXI&a=10&b=26&c=1990&d=3&e=27&f=2017&g=d&ignore=.csv')
 CDAX <- read.csv("~/hertie-election-forecasting (Akira)/^CDAXX.csv")
 CDAX$Date <- ymd(as.character(CDAX$Date))
@@ -35,20 +69,97 @@ CDAX$X3M_before <- ymd(as.character(CDAX$X3M_before))
 CDAX$X6M_before <- ymd(as.character(CDAX$X6M_before))
 CDAX$X9M_before <- ymd(as.character(CDAX$X9M_before))
 CDAX$X12_before <- ymd(as.character(CDAX$X12_before))
-StockHist <- read.csv("~/hertie-election-forecasting (Akira)/Tab__01_Aktienindex__Dividendenrendite__Performance-Index__Index_der_Lebenshaltungskosten__Realer_Pe.csv")
-GfK <- read.csv('~/hertie-election-forecasting (Akira)/GfK.csv')
+library(readr)
+CDAX_quarterly <- read_csv("~/hertie-election-forecasting (Akira)/CDAX_quarterly.csv")
+CDAX_quarterly$Date <- ymd(as.character(CDAX_quarterly$Date))
 GFE_Kayser <- read_dta('~/hertie-election-forecasting (Akira)/BundestagForecastReplicationData.dta')
-GFE <- read_dta('~/hertie-election-forecasting (Akira)/data/ger_nat.dta')
-election_dates <- load('~/hertie-election-forecasting/data/election_dates.RData')
-GDP <- read.csv('~/hertie-election-forecasting (Akira)/CLVMNACSCAB1GQDE.csv')
+GDP <- read_csv("~/hertie-election-forecasting (Akira)/GDP.csv")
 GDP$Date <- ymd(as.character(GDP$DATE))
-GFE$Date <- election_date
-GFE$Date <- ymd(as.character(GFE$Date))
 GFE_Kayser$Date <- as.Date(GFE_Kayser$date, "%d.%m.%Y")
-DAX_GfK <- merge(DAX, GfK, by = "Date")
-GFE.con <- merge(CDAX, GFE_Kayser, by = "Date")
+```
+
+```{r plot CDAX_GDP, include=TRUE, echo=TRUE}
+par(mar = c(5,5,2,5))
+with(CDAX_quarterly, plot(as.Date(Date), stock_gr, type="l", col="red3", 
+xlab="Year", ylab= "CDAX quarterly growth (%)"), 
+ylim=c(0,1200))
+par(new = T)
+with(GDP, plot(as.Date(Date), GDP_growth, type="l", axes=F, col="blue3", xlab="Year", ylab=NA, cex=1.2))
+axis(side = 4)
+mtext(side = 4, line = 3, 'GDP quarterly growth (%)')
+legend("topleft",
+legend=c("DAX quarterly growth (%)", "GDP quarterly growth (%)"),
+lty=1:1, cex=0.50, col=c("red3", "blue3"))
+CDAX_GDP <- merge(CDAX_quarterly, GDP, by = "Date", all = TRUE)
 
 ```
+
+```{r}
+ccfvalues <- ccf(CDAX_quarterly$stock_gr, CDAX_GDP$GDP_growth, na.action = na.pass)
+ccfvalues
+```
+
+
+```{r regression, include=TRUE, echo=TRUE}
+m <- glm(incumbent_win ~ three_month + prelecshare + pid + logterms, GFE_Kayser,  family = binomial(link = logit))
+m1 <- glm(incumbent_win ~ six_month + prelecshare + pid + logterms, GFE_Kayser, family = binomial(link = logit))
+m2 <- glm(incumbent_win ~ nine_month + prelecshare + pid + logterms, GFE_Kayser,  family = binomial(link = logit))
+m3 <- glm(incumbent_win ~ twelve_month + prelecshare + pid + logterms, GFE_Kayser,  family = binomial(link = logit))
+m4 <- glm(incumbent_win ~ election_date + prelecshare + pid + logterms, GFE_Kayser,  family = binomial(link = logit))
+summary(m)
+
+t2 <- lm(incumbent_win ~ six_month + prelecshare + pid + logterms, GFE_Kayser)
+summary()
+
+#marginal analysis
+
+s <- lm(outgovshare ~ election_date + prelecshare + pid + logterms, GFE_Kayser)
+s1 <- lm(outgovshare ~ three_month + prelecshare + pid + logterms, GFE_Kayser)
+s2 <- lm(outgovshare ~ six_month + prelecshare + pid + logterms, GFE_Kayser)
+s3 <- lm(outgovshare ~ nine_month + prelecshare + pid + logterms, GFE_Kayser)
+s4 <- lm(outgovshare ~ twelve_month + prelecshare + pid + logterms, GFE_Kayser)
+summary(s2)
+```
+
+```{r historical difference, include=TRUE, echo=TRUE}
+pre1969 <- subset(GFE_Kayser, Date < as.Date("1965-09-19"))
+after1969 <- subset(GFE_Kayser, Date >= as.Date("1965-09-19"))
+pre1969.lm <- lm(outgovshare ~ history, pre1969)
+after1969.lm <- lm(outgovshare ~ history, after1969)
+summary(pre1969.lm)
+summary(after1969.lm)
+```
+
+```{r CDU advantage, include=TRUE, echo=TRUE}
+pro_CDU <- glm(pro_CDU ~ six_month + prelecshare + pid + logterms, GFE_Kayser, family = binomial(link = logit))
+
+summary(pro_CDU)
+pro_CDU2 <- lm(pro_CDU ~ six_month + prelecshare + pid + logterms, GFE_Kayser)
+summary(pro_CDU2)
+```
+
+
+```{r plot DAX & GfK, include=TRUE, echo=TRUE}
+par(mar = c(5,5,2,5))
+with(DAX_GfK, plot(as.Date(Date), Close, type="l", col="red3",
+xlab="Year", ylab= "DAX"),
+ylim=c(0,1200))
+par(new = T)
+with(DAX_GfK, plot(as.Date(Date), Actual, type="l", axes=F, col="blue3", xlab="Year", ylab=NA, cex=1.2))
+axis(side = 4)
+mtext(side = 4, line = 3, 'GfK Consumer Confidence')
+legend("topleft",
+legend=c(expression(DAX), "GfK Consumer Confidence"),
+lty=1:1, cex=0.75, col=c("red3", "blue3"))
+ccfvalues2 <- ccf(DAX_GfK$Close, DAX_GfK$Actual)
+ccfvalues2
+```
+
+```{r consolidated, include=TRUE, echo=TRUE}
+
+```
+
+
 
 ```{r plot CDAX_GfK, include=TRUE, echo=TRUE}
 par(mar = c(5,5,2,5))
@@ -71,7 +182,10 @@ summary(perception)
 #zoo
 ```
 
-```{r plot CDAX_GDP, include=TRUE, echo=TRUE}
+
+```{r}
+rm(list = ls())
+
 install.packages("xts")
 library(xts)
 CDAX2 <- CDAX[endpoints(CDAX$Date, on = "months"), ]
@@ -81,54 +195,23 @@ at = CDAX2$Date %in% locs
 at = at & format(CDAX2$Date, '%m') %in% c('03', '06', '09', '12')
 CDAX3 <- CDAX2[which(at == TRUE),]
 CDAX3 <- subset(CDAX3, Date > as.Date("1991-01-01"))
-CDAX3$stock_gr <- as.numeric(CDAX3$Close)/lag(as.numeric(CDAX3$Close,1)-1)*100
-par(mar = c(5,5,2,5))
-with(CDAX3, plot(as.Date(Date), stock_gr, type="l", col="red3", 
-xlab="Year", ylab= "CDAX quarterly growth (%)"), 
-ylim=c(0,1200))
-par(new = T)
-with(GDP, plot(as.Date(Date), GDP_growth, type="l", axes=F, col="blue3", xlab="Year", ylab=NA, cex=1.2))
-axis(side = 4)
-mtext(side = 4, line = 3, 'GDP quarterly growth (%)')
-legend("topleft",
-legend=c("DAX quarterly growth (%)", "GDP quarterly growth (%)"),
-lty=1:1, cex=0.50, col=c("red3", "blue3"))
-ccfvalues3 <- ccf(stock_GDP$stock_gr, stock_GDP$GDP_growth, na.action = na.pass)
-ccfvalues3
-```
-
-```{r plot DAX & GfK, include=TRUE, echo=TRUE}
-par(mar = c(5,5,2,5))
-with(DAX_GfK, (as.Date(Date), Close, type="l", col="red3",
-xlab="Year", ylab=expression(DAX)),
-ylim=c(0,1200))
-par(new = T)
-with(eco.in, plot(as.Date(Date), Actual, type="l", axes=F, col="blue3", xlab="Year", ylab=NA, cex=1.2))
-axis(side = 4)
-mtext(side = 4, line = 3, 'GfK Consumer Confidence')
-legend("topleft",
-legend=c(expression(DAX), "GfK Consumer Confidence"),
-lty=1:1, cex=0.75, col=c("red3", "blue3"))
-ccfvalues2 <- ccf(DAX_GfK$Close, DAX_GfK$Actual)
-ccfvalues2
-```
-
-```{r consolidated, include=TRUE, echo=TRUE}
-
-```
-
-```{r regression, include=TRUE, echo=TRUE}
-m <- lm(outgovshare ~ three_month + prelecshare + pid + logterms, GFE_Kayser)
-m1 <- lm(outgovshare ~ six_month + prelecshare + pid + logterms, GFE_Kayser)
-m2 <- lm(outgovshare ~ nine_month + prelecshare + pid + logterms, GFE_Kayser)
-m3 <- lm(outgovshare ~ twelve_month + prelecshare + pid + logterms, GFE_Kayser)
-summary(m)
-m4 <- lm(outgovshare ~ election_date + prelecshare + pid + logterms, GFE_Kayser)
-summary(m4)
-```
+CDAX3$stock_gr <- ((as.numeric(CDAX3$Close) - lag(as.numeric(CDAX3$Close))) / lag(as.numeric(CDAX3$Close))) * 100
 
 
-```{r}
-rm(list = ls())
+install.packages("arm")
+library(arm)
+g <- glm(incumbent_win ~ three_month + prelecshare + pid + logterms, GFE_Kayser,  family="binomial")
+g1 <- bayesglm(incumbent_win ~ six_month + prelecshare + pid + logterms, GFE_Kayser, family="binomial")
+g2 <- bayesglm(incumbent_win ~ nine_month + prelecshare + pid + logterms, GFE_Kayser,  family="binomial")
+g3 <- bayesglm(incumbent_win ~ twelve_month + prelecshare + pid + logterms, GFE_Kayser,  family="binomial")
+g4 <- bayesglm(incumbent_win ~ election_date + prelecshare + pid + logterms, GFE_Kayser,  family="binomial")
+summary(g4)
+
+GFE$Date <- election_date
+GFE$Date <- ymd(as.character(GFE$Date))
+GfK <- read.csv('~/hertie-election-forecasting (Akira)/GfK.csv')
+GFE <- read_dta('~/hertie-election-forecasting (Akira)/data/ger_nat.dta')
+election_dates <- load('~/hertie-election-forecasting/data/election_dates.RData')
+DAX_GfK <- merge(DAX, GfK, by = "Date")
 ```
 
