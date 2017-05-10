@@ -14,7 +14,7 @@ opts_chunk$set(message = FALSE, error = TRUE, fig.pos = 'H', tidy.opts=list(widt
 
 #Introduction
 ##The 2016 US presidential election result was a huge surprise to all people as the outcome was totally different from what the majority of pollsters and media had forecasted. Only very few pundits managed to predict Donald Trump’s victory and those have not proved the prediction on a scientific ground. However, there was one interesting indicator that was free from any intentional bias and that could be used to predict Trump’s win before the election had taken place; stock market index. According to Long (2016), the S&P 500 index performance during the latest three months prior to the election indicated that Trump would likely win against Hilary at the election. The mechanism is as follows. Firstly, the stock index is tracked in the last three before the election month. Then, the ups-and-downs of the market during the period are analyzed. If the index rose from the beginning at the end of the period, the incumbent governing parties are predicted to win the election. If it shows the opposite trend, the incumbent party will lose. The method correctly predicted 19 of the past US presidential 22 elections, which is 86% accuracy (Shell, 2016). This is a surprising outcome for such a simple analysis. The underlying theory is that “if the economy is growing and people think the good times will continue, they are likely to want to stick with the same presidential party. If they are fearful, stocks tend to fall, and voters want new leadership” (Long, 2016). The only times this model failed were when there were strong third partycandidates involved, for example in 1968 and 1980 US presidential elections, and also when a big geopolitical shock happened like 1956 Suez Crisis (Long, 2016).
-##This relation between stock market index and election results poses an interesting question; do people regard elections as the channel to reward or punish the incumbent office, if not merely but largely, based on its economic performance? Stock market index is usually said a leading economic indicator that shows the economic performance of the country before it really impacts people’s living. Generally speaking, it takes from a few months or a year until the impact reaches people in the form of employment, salary change and price change. This time lag gives stock market index a potential to predict election results with an appealing amount of lead. This paper would like to test this theory in German federal election instead of US presidential election in the interest of studying whether the variable can be relevant to the other countries aside the US as well. Ambitiously, this paper also would like to predict whether Angela Merkel can stay in the office after the upcoming election in Germany, which takes place on 24 September 2017. If the model really works in German election, with the simplicity of the model and the relatively long lead, this model could be an attractive alternative to the existing models.
+##This relation between stock market index and election results poses an interesting question; do people regard elections as the channel to reward or punish the incumbent office, if not merely but largely, based on its economic performance? Stock market index is usually said a leading economic indicator that shows the economic performance of the country before it really impacts people’s living. Generally speaking, it takes from a few months or a year until the impact reaches people in the form of employment, salary change and price change. This time lag gives stock market index a potential to predict election results with an appealing amount of lead. This paper would like to test this theory in German federal election instead of US presidential election in the interest of studying whether the variable can be relevant to the other countries aside the US as well.
 
 
 #Research design
@@ -78,6 +78,12 @@ GDP$Date <- ymd(as.character(GDP$DATE))
 GFE_Kayser$Date <- as.Date(GFE_Kayser$date, "%d.%m.%Y")
 ```
 
+#Analysis
+
+#Time lag between Stock Market and GDP
+##At first, the time lag between the stock market index and the real economic performance has to be defined. This paper examines this through comparing the fluctions of CDAX quarterly growth with GDP quarterly growth. The below chart shows the their performances from 1991 to 2016.
+
+
 ```{r plot CDAX_GDP, include=TRUE, echo=TRUE}
 par(mar = c(5,5,2,5))
 with(CDAX_quarterly, plot(as.Date(Date), stock_gr, type="l", col="red3", 
@@ -88,37 +94,37 @@ with(GDP, plot(as.Date(Date), GDP_growth, type="l", axes=F, col="blue3", xlab="Y
 axis(side = 4)
 mtext(side = 4, line = 3, 'GDP quarterly growth (%)')
 legend("topleft",
-legend=c("DAX quarterly growth (%)", "GDP quarterly growth (%)"),
+legend=c("CDAX quarterly growth (%)", "GDP quarterly growth (%)"),
 lty=1:1, cex=0.50, col=c("red3", "blue3"))
 CDAX_GDP <- merge(CDAX_quarterly, GDP, by = "Date", all = TRUE)
 
 ```
 
+##In analyzing the time lag, this paper uses Cross Correlation Functions (CCF) which enables to see the lags between two variables. The below chart reveals the relation beween CDAX quarterly growth and GDP quarterly growth. X axis indicates the time lag between the two variables and Y axis tells the cross correlations between them. The left from zero on the X axis means CDAX growth leads GDP growth while the right indicates CDAX growth lags GDP growth. Positive Y axis is the indaction of positive correlations between CDAX growth and GDP growth and the opposite stands for the negativec Y axis. According to the chart, there seems a strong positive relation between CDAX growth and GDP growth where the lag is between -1 and -4. This means it is likely that CDAX growth leads GDP growth by 1 to 4 quarters. 
+
 ```{r}
 ccfvalues <- ccf(CDAX_quarterly$stock_gr, CDAX_GDP$GDP_growth, na.action = na.pass)
+```
+
+#The next table shows the more detailed picture of the correlation. According to the table, it becomes clear that the most substantive correlation can be observed when the lag is -1 and -2. This can be interepreted that it very likely that CDAX leads GDP by 1 to 2 quarters (3 months to 6 months). Therefore, this paper focuses on these two time lags and evlauate the statistical significace of the both.
+
+```{r}
 ccfvalues
 ```
 
+#Statistical analysis of the model
+##Given the two possibilities as the stock market index variable, this paper conducts two different OLS regressions. The below table shows the results. The left is the model using three-month CDAX performance in three months prior to the election date. The variables of previous election share and party ID hold statistical signicance under the 5% rule. However, log terms are slighty outside the 95% confidence level and the stock market variable shows the significantly high p-value and quite low t-value, meaning the variable does not have a significant effect on the election outcome. Also, the direction of effct is negative, which signifies a negative correlation between the stock market performance and the incumbent government's popularity. This is totally at odds with the hypothesis this paper is analyzing on. Considering the all outcomes, the left model fails to prove any significance. 
+##On the other hand, the model on the right, including three-month CDAX performance in six months prior to the election date as one of the variables, reveals much more robustness. The all variables except for the stock market index are statistically significant with 95% confidence level. Even the stock market index shows a much stronger significance than the previous model as the p-value is much smaller and the t-value is also larger. The coefficient for the stock market index variable is positive as well, which is line with the hypothesis. The coefficient of the stock market index variable is much more substantive than some of the other variables. Furthermore, the adjusted R-squared of this model is higer than the previous one, which tells this model is more statistically signifianct. 
 
 ```{r regression, include=TRUE, echo=TRUE}
-m <- glm(incumbent_win ~ three_month + prelecshare + pid + logterms, GFE_Kayser,  family = binomial(link = logit))
-m1 <- glm(incumbent_win ~ six_month + prelecshare + pid + logterms, GFE_Kayser, family = binomial(link = logit))
-m2 <- glm(incumbent_win ~ nine_month + prelecshare + pid + logterms, GFE_Kayser,  family = binomial(link = logit))
-m3 <- glm(incumbent_win ~ twelve_month + prelecshare + pid + logterms, GFE_Kayser,  family = binomial(link = logit))
-m4 <- glm(incumbent_win ~ election_date + prelecshare + pid + logterms, GFE_Kayser,  family = binomial(link = logit))
-summary(m)
-
-t2 <- lm(incumbent_win ~ six_month + prelecshare + pid + logterms, GFE_Kayser)
-summary()
-
-#marginal analysis
-
-s <- lm(outgovshare ~ election_date + prelecshare + pid + logterms, GFE_Kayser)
-s1 <- lm(outgovshare ~ three_month + prelecshare + pid + logterms, GFE_Kayser)
-s2 <- lm(outgovshare ~ six_month + prelecshare + pid + logterms, GFE_Kayser)
-s3 <- lm(outgovshare ~ nine_month + prelecshare + pid + logterms, GFE_Kayser)
-s4 <- lm(outgovshare ~ twelve_month + prelecshare + pid + logterms, GFE_Kayser)
-summary(s2)
+m1 <- lm(outgovshare ~ three_month + prelecshare + pid + logterms, GFE_Kayser)
+m2 <- lm(outgovshare ~ six_month + prelecshare + pid + logterms, GFE_Kayser)
+stargazer(m1, m2, header = FALSE, float = FALSE, 
+          title = "Estimiates for the forecast models", 
+          covariate.labels=c("CDAX performance (3 month before)","CDAX performance (6 month before)", "Previous vote share",
+                             "Party ID","Log terms"), out = "html", no.space=TRUE)
+summary(m1)
+summary(m2)
 ```
 
 ```{r historical difference, include=TRUE, echo=TRUE}
@@ -139,7 +145,7 @@ summary(pro_CDU2)
 ```
 
 
-```{r plot DAX & GfK, include=TRUE, echo=TRUE}
+```{r plot DAX & GfK, include=FALSE, echo=FALSE}}
 par(mar = c(5,5,2,5))
 with(DAX_GfK, plot(as.Date(Date), Close, type="l", col="red3",
 xlab="Year", ylab= "DAX"),
@@ -155,13 +161,8 @@ ccfvalues2 <- ccf(DAX_GfK$Close, DAX_GfK$Actual)
 ccfvalues2
 ```
 
-```{r consolidated, include=TRUE, echo=TRUE}
 
-```
-
-
-
-```{r plot CDAX_GfK, include=TRUE, echo=TRUE}
+```{r plot CDAX_GfK, include=FALSE, echo=FALSE}}
 par(mar = c(5,5,2,5))
 with(DAX_GfK, plot(as.Date(Date), Close, type="l", col="red3",
 xlab="Year", ylab=expression(DAX)),
@@ -183,7 +184,7 @@ summary(perception)
 ```
 
 
-```{r}
+```{r, include=FALSE, echo=FALSE}}
 rm(list = ls())
 
 install.packages("xts")
@@ -213,5 +214,26 @@ GfK <- read.csv('~/hertie-election-forecasting (Akira)/GfK.csv')
 GFE <- read_dta('~/hertie-election-forecasting (Akira)/data/ger_nat.dta')
 election_dates <- load('~/hertie-election-forecasting/data/election_dates.RData')
 DAX_GfK <- merge(DAX, GfK, by = "Date")
+
+m2 <- glm(incumbent_win ~ nine_month + prelecshare + pid + logterms, GFE_Kayser,  family = binomial(link = logit))
+m3 <- glm(incumbent_win ~ twelve_month + prelecshare + pid + logterms, GFE_Kayser,  family = binomial(link = logit))
+m4 <- glm(incumbent_win ~ election_date + prelecshare + pid + logterms, GFE_Kayser,  family = binomial(link = logit))
+m <- glm(incumbent_win ~ three_month + prelecshare + pid + logterms, GFE_Kayser,  family = binomial(link = logit))
+m1 <- glm(incumbent_win ~ six_month + prelecshare + pid + logterms, GFE_Kayser, family = binomial(link = logit))
+summary(m)
+
+t2 <- lm(incumbent_win ~ six_month + prelecshare + pid + logterms, GFE_Kayser)
+summary()
+
+s3 <- lm(outgovshare ~ nine_month + prelecshare + pid + logterms, GFE_Kayser)
+s4 <- lm(outgovshare ~ twelve_month + prelecshare + pid + logterms, GFE_Kayser)
+
+
+
+#marginal analysis
+
+
+
+s <- lm(outgovshare ~ election_date + prelecshare + pid + logterms, GFE_Kayser)
 ```
 
