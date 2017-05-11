@@ -104,6 +104,7 @@ CDAX_GDP <- merge(CDAX_quarterly, GDP, by = "Date", all = TRUE)
 
 ```{r}
 ccfvalues <- ccf(CDAX_quarterly$stock_gr, CDAX_GDP$GDP_growth, na.action = na.pass)
+<<<<<<< HEAD
 ```
 
 #The next table shows the more detailed picture of the correlation. According to the table, it becomes clear that the most substantive correlation can be observed when the lag is -1 and -2. This can be interepreted that it very likely that CDAX leads GDP by 1 to 2 quarters (3 months to 6 months). Therefore, this paper focuses on these two time lags and evlauate the statistical significace of the both.
@@ -124,11 +125,31 @@ m2 <- lm(outgovshare ~ six_month + prelecshare + pid + logterms, GFE_Kayser)
 m3 <- lm(outgovshare ~ nine_month + prelecshare + pid + logterms, GFE_Kayser)
 m4 <- lm(outgovshare ~ twelve_month + prelecshare + pid + logterms, GFE_Kayser)
 
+=======
+```
+
+#The next table shows the more detailed picture of the correlation. According to the table, it becomes clear that the most substantive correlation can be observed when the lag is -1 and -2. This can be interepreted that it very likely that CDAX leads GDP by 1 to 2 quarters (3 months to 6 months). Therefore, this paper focuses on these two time lags and evlauate the statistical significace of the both.
+
+```{r}
+ccfvalues
+```
+
+#Statistical analysis of the model
+##Given the two possibilities as the stock market index variable, this paper conducts two different OLS regressions. The below table shows the results. The left is the model using three-month CDAX performance in three months prior to the election date. The variables of previous election share and party ID hold statistical signicance under the 5% rule. However, log terms are slighty outside the 95% confidence level and the stock market variable shows the significantly high p-value and quite low t-value, meaning the variable does not have a significant effect on the election outcome. Also, the direction of effct is negative, which signifies a negative correlation between the stock market performance and the incumbent government's popularity. This is totally at odds with the hypothesis this paper is analyzing on. Considering the all outcomes, the left model fails to prove any significance. 
+##On the other hand, the model on the right, including three-month CDAX performance in six months prior to the election date as one of the variables, reveals much more robustness. The all variables except for the stock market index are statistically significant with 95% confidence level. Even the stock market index shows a much stronger significance than the previous model as the p-value is much smaller and the t-value is also larger. The coefficient for the stock market index variable is positive as well, which is line with the hypothesis. The coefficient of the stock market index variable is much more substantive than some of the other variables. Furthermore, the adjusted R-squared of this model is higer than the previous one, which tells this model is more statistically signifianct. 
+
+```{r regression, include=TRUE, echo=TRUE}
+m1 <- lm(outgovshare ~ three_month + prelecshare + pid + logterms, GFE_Kayser)
+m2 <- lm(outgovshare ~ six_month + prelecshare + pid + logterms, GFE_Kayser)
+>>>>>>> de86032809aa2f56b7e3ce8128fdcf967ab6db81
 stargazer(m1, m2, header = FALSE, float = FALSE, 
           title = "Estimiates for the forecast models", 
           covariate.labels=c("CDAX performance (3 month before)","CDAX performance (6 month before)", "Previous vote share",
                              "Party ID","Log terms"), out = "html", no.space=TRUE)
+<<<<<<< HEAD
 summary(m)
+=======
+>>>>>>> de86032809aa2f56b7e3ce8128fdcf967ab6db81
 summary(m1)
 summary(m2)
 ```
